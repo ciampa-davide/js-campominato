@@ -23,42 +23,64 @@ for (var i = 0; i < 16; i++) {
 
 var bombs = [];
 var user = [];
+var level ;
+var maxNumber;
+
+level= parseInt(prompt("scegli i livello di difficolta: "));
+//BONUS
+switch (level) {
+  case "2" :
+
+    maxNumber = 50;
+    break;
+
+  case "1":
+    maxNumber = 80;
+    break;
+  default:
+  maxNumber= 100;
+}
 
 while (bombs.length < 16) {
   // Genero bomba casuale
-  var bomb = Math.floor(Math.random() * 100) + 1;
-  var elementoPresente = checkDuplicati(bomb, bombs);
+  var bomb = Math.floor(Math.random() * maxNumber) + 1;
+  var elementoPresente = checkDuplicato (bomb, bombs);
   if (elementoPresente == false) {
     bombs.push(bomb);
   }
 }
 
-console.log(bombs);
-console.log(user);
+console.log("bombe:", bombs);
+console.log("numeri inseriti: ", user);
 
-function checkDuplicati(bomb, bombs) {
-  var risultato = false;
-  for(var i = 0; i < bombs.length; i++) {
-    if (bomb == bombs[i]) {
-      risultato = true;
-    }
-  }
-  return risultato;
-}
 // In seguito deve chiedere all’utente (100 - 16) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
+var haveULost = false;
+while (user.length < (maxNumber - 16) && haveULost == false){
 
-while (user.length < 5){
   var point = parseInt(prompt("inserisci il numero: "));
-  var pointInside = checkDuplicato(point, user);
-  var checkUsernNumber = checkBomb(user, bombs);
-  if (checkUsernNumber == false) {
-    alert("hai perso!");
-  }
 
-  if (pointInside == false) {
+  var pointInside = checkDuplicato(point, user);
+
+  var checkGame = checkDuplicato(point , bombs);
+
+  console.log(checkGame);
+
+  if (checkGame == true){
+
+    alert("hai perso");
+
+    haveULost = true;
+
+  }else if (pointInside == false) {
+
+    alert("inserisci un altro numero");
     user.push(point);
+
   }
 }
+
+//_----------------------------------------------------------------------------------------------------------------------
+
 
 
 function checkDuplicato(point, user) {
@@ -71,14 +93,5 @@ function checkDuplicato(point, user) {
   return risultato;
 }
 
-function checkBomb(user, bombs){
-  var risultato = false;
-  for (var i = 0; i = user.length; i++){
-    if (point == bombs){
-      risultato = true;
-    }
-  }
-  return risultato;
-}
 
 // Se il numero è presente nella lista dei numeri generati, la partita termina, altrimenti si continua
